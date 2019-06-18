@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, Fragment } from 'react';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
@@ -6,41 +6,50 @@ import { Link } from 'react-router-dom';
 import AuthContext from '../../context/auth/authContext';
 
 const Navbar = ({ title, icon, history }) => {
-    const { logout } = useContext(AuthContext);
+    const { logout, isAuth, user } = useContext(AuthContext);
+
     const onLogout = () => {
         logout();
         history.replace('/login');
     };
 
+    const authLinks = (
+        <Fragment>
+            <li className='pr-1'>Hello {user && user.name}</li>
+            <li>
+                <a
+                    href='#!'
+                    // className='btn btn-link'
+                    // style={{ color: '#FFF', paddingLeft: '0.5rem' }}
+                    onClick={onLogout}
+                >
+                    <i className='fas fa-sign-out-alt'>
+                        <span className='hide-sm'>Logout</span>
+                    </i>
+                </a>
+            </li>
+        </Fragment>
+    );
+
+    const guestLinks = (
+        <Fragment>
+            <li>
+                <Link to='/register'>Register</Link>
+            </li>
+            <li>
+                <Link to='/login'>Login</Link>
+            </li>
+        </Fragment>
+    );
+
     return (
         <div className='navbar bg-primary'>
             <h1>
-                <i className={icon} /> {title}
+                <Link to='/'>
+                    <i className={icon} /> {title}
+                </Link>
             </h1>
-            <ul>
-                <li>
-                    <Link to='/'>Home</Link>
-                </li>
-                <li>
-                    <Link to='/about'>About</Link>
-                </li>
-                <li>
-                    <Link to='/register'>Register</Link>
-                </li>
-                <li>
-                    <Link to='/login'>Login</Link>
-                </li>
-                <li>
-                    <button
-                        href='#'
-                        className='btn btn-link'
-                        style={{ color: '#FFF', paddingLeft: '0.5rem' }}
-                        onClick={onLogout}
-                    >
-                        Logout
-                    </button>
-                </li>
-            </ul>
+            <ul>{isAuth ? authLinks : guestLinks}</ul>
         </div>
     );
 };

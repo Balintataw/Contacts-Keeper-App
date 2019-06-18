@@ -15,6 +15,7 @@ router.get('/', authMiddleware, async (req, res) => {
     // req.user comes from authMiddleware
     try {
         const user = await User.findById(req.user.id).select('-password');
+        console.log('API AUTH USER', user);
         res.status(200).json(user);
     } catch (err) {
         console.error(err.message);

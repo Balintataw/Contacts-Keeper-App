@@ -1,10 +1,25 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
+import { withRouter } from 'react-router-dom';
 
 import AlertContext from '../../context/alert/alertContext';
+import AuthContext from '../../context/auth/authContext';
 import { validateForm } from '../../utils';
 
-const Login = () => {
+const Login = props => {
     const { setAlert } = useContext(AlertContext);
+    const { login, error, clearErrors, isAuth } = useContext(AuthContext);
+
+    useEffect(() => {
+        if (isAuth) {
+            props.history.push('/');
+        }
+        if (error) {
+            setAlert('danger', error);
+            clearErrors();
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [error, isAuth, props.history]);
+
     const [user, setUser] = useState({
         email: '',
         password: '',
@@ -22,6 +37,7 @@ const Login = () => {
             setAlert('danger', msg);
             return;
         }
+        login(user);
         console.log('USER', user);
     };
 
@@ -39,6 +55,7 @@ const Login = () => {
                         name='email'
                         value={email}
                         onChange={onChange}
+                        required
                     />
                 </div>
                 <div className='form-group'>
@@ -48,6 +65,7 @@ const Login = () => {
                         name='password'
                         value={password}
                         onChange={onChange}
+                        required
                     />
                 </div>
                 <button
@@ -61,4 +79,4 @@ const Login = () => {
     );
 };
 
-export default Login;
+export default withRouter(Login);
