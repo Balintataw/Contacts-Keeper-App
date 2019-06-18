@@ -99,7 +99,19 @@ img {
     text-align: left;
 }
 
-/* Center All */
+/* Flexbox */
+.flex {
+    display: flex;
+}
+
+.align-center {
+    align-items: center;
+}
+
+.justify-center {
+    justify-content: center;
+}
+
 .all-center {
     display: flex;
     flex-direction: column;
@@ -447,6 +459,7 @@ input {
 input[type='text'],
 input[type='email'],
 input[type='password'],
+input[type='tel'],
 input[type='date'],
 select,
 textarea {
@@ -501,6 +514,30 @@ table th {
 
 .navbar .welcome span {
     margin-right: 0.6rem;
+}
+
+/* Animations */
+/* fade shrink */
+.fade-enter {
+    opacity: 0;
+    transform: scale(0);
+}
+
+.fade-enter-active {
+    opacity: 1;
+    transform: scale(1);
+    transition: all 400ms ease-in;
+}
+
+.fade-exit {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.fade-exit-active {
+    opacity: 0;
+    transform: scale(0);
+    transition: all 400ms ease-out;
 }
 
 /* Mobile Styles */
