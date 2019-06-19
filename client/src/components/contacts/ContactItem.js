@@ -6,10 +6,10 @@ const ContactItem = contact => {
     const { deleteContact, setCurrent, clearCurrent } = useContext(
         ContactContext
     );
-    const { id, name, email, phone, type } = contact;
+    const { _id, name, email, phone, type } = contact;
 
     const onDeleteContact = () => {
-        deleteContact(id);
+        deleteContact(_id);
         clearCurrent();
     };
 
@@ -61,7 +61,7 @@ const ContactItem = contact => {
 };
 
 ContactItem.propTypes = {
-    id: PropTypes.number.isRequired,
+    _id: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
     email: PropTypes.string,
     phone: PropTypes.string,

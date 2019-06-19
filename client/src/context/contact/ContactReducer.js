@@ -1,6 +1,10 @@
 import {
     ADD_CONTACT,
+    GET_CONTACTS,
+    CLEAR_CONTACTS,
     DELETE_CONTACT,
+    START_LOADING,
+    CONTACT_ERROR,
     SET_CURRENT,
     CLEAR_CURRENT,
     UPDATE_CONTACT,
@@ -10,17 +14,44 @@ import {
 
 export default (state, { type, payload }) => {
     switch (type) {
+        case GET_CONTACTS:
+            return {
+                ...state,
+                contacts: payload,
+                loading: false,
+            };
         case ADD_CONTACT:
             return {
                 ...state,
-                contacts: [...state.contacts, payload],
+                contacts: [payload, ...state.contacts],
+                loading: false,
             };
         case DELETE_CONTACT:
             return {
                 ...state,
                 contacts: state.contacts.filter(
-                    contact => contact.id !== payload
+                    contact => contact._id !== payload
                 ),
+                loading: false,
+            };
+        case CLEAR_CONTACTS:
+            return {
+                ...state,
+                contacts: [],
+                filtered: [],
+                error: null,
+                current: null,
+            };
+        case START_LOADING:
+            return {
+                ...state,
+                loading: true,
+            };
+        case CONTACT_ERROR:
+            return {
+                ...state,
+                error: payload,
+                loading: false,
             };
         case SET_CURRENT:
             return {
@@ -36,8 +67,9 @@ export default (state, { type, payload }) => {
             return {
                 ...state,
                 contacts: state.contacts.map(contact =>
-                    contact.id === payload.id ? payload : contact
+                    contact._id === payload._id ? payload : contact
                 ),
+                loading: false,
             };
         case FILTER_CONTACTS:
             return {

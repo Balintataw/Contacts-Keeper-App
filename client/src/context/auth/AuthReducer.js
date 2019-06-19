@@ -14,8 +14,8 @@ export default (state, { type, payload }) => {
     switch (type) {
         case REGISTER_SUCCESS:
         case LOGIN_SUCCESS:
-            console.log('REG<LOGIN SUCCESS', payload);
             localStorage.setItem('token', payload);
+            localStorage.setItem('isAuth', true);
             return {
                 ...state,
                 token: payload,
@@ -26,8 +26,9 @@ export default (state, { type, payload }) => {
         case AUTH_ERROR:
         case LOGIN_FAIL:
         case LOGOUT:
-            console.log('FAILURE');
             localStorage.removeItem('token');
+            localStorage.removeItem('isAuth');
+            localStorage.removeItem('user');
             return {
                 ...state,
                 token: null,
@@ -42,7 +43,7 @@ export default (state, { type, payload }) => {
                 loading: true,
             };
         case USER_LOADED:
-            console.log('USER_LOADED REDUCER', payload);
+            localStorage.setItem('user', JSON.stringify(payload));
             return {
                 ...state,
                 isAuth: true,

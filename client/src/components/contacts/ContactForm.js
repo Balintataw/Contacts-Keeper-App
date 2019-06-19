@@ -1,6 +1,8 @@
 import React, { useContext, useState, useEffect } from 'react';
+
 import ContactContext from '../../context/contact/contactContext';
-import { UPDATE_CONTACT } from '../../context/types';
+import AlertContext from '../../context/alert/alertContext';
+import { validateForm } from '../../utils';
 
 const ContactForm = () => {
     const initialState = {
@@ -11,9 +13,11 @@ const ContactForm = () => {
     };
     const [contact, setContact] = useState(initialState);
     const { name, email, phone, type } = contact;
+
     const { addContact, current, clearCurrent, updateContact } = useContext(
         ContactContext
     );
+    const { setAlert } = useContext(AlertContext);
 
     useEffect(() => {
         if (current !== null) {
@@ -23,6 +27,7 @@ const ContactForm = () => {
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [current]);
+
     const onChange = e =>
         setContact({ ...contact, [e.target.name]: e.target.value });
 
@@ -31,6 +36,11 @@ const ContactForm = () => {
     };
 
     const handleSubmit = () => {
+        const { valid, msg } = validateForm(contact);
+        if (!valid) {
+            setAlert('danger', msg);
+            return;
+        }
         if (current === null) {
             addContact(contact);
         } else {
@@ -50,6 +60,7 @@ const ContactForm = () => {
                 name='name'
                 value={name}
                 onChange={onChange}
+                required
             />
             <input
                 type='email'
@@ -57,6 +68,7 @@ const ContactForm = () => {
                 name='email'
                 value={email}
                 onChange={onChange}
+                required
             />
             <input
                 type='tel'
@@ -64,6 +76,7 @@ const ContactForm = () => {
                 name='phone'
                 value={phone}
                 onChange={onChange}
+                required
             />
             <h5>Contact Type</h5>
             <div className='flex align-center'>

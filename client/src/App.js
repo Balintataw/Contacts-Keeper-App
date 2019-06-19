@@ -12,11 +12,12 @@ import About from './components/pages/About';
 import Alerts from './components/layouts/Alerts';
 import Navbar from './components/layouts/Navbar';
 import Register from './components/auth/Register';
-import ProtectedRoute from './components/routing/ProtectedRoute';
+import PrivateRoute from './components/routing/PrivateRoute';
 
 import { setAuthToken } from './utils';
-if (localStorage.getItem('token')) {
-    setAuthToken(localStorage.getItem('token'));
+if (localStorage.token) {
+    console.log('SETTING TOKEN', localStorage.token);
+    setAuthToken(localStorage.token);
 }
 
 const App = () => {
@@ -30,7 +31,7 @@ const App = () => {
                             <div className='container'>
                                 <Alerts />
                                 <Switch>
-                                    <ProtectedRoute
+                                    <PrivateRoute
                                         exact
                                         path='/'
                                         component={Home}

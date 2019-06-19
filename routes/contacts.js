@@ -71,10 +71,10 @@ router.put('/:id', authMiddleware, async (req, res) => {
         let contact = await Contact.findById(req.params.id);
         if (!contact) return res.status(404).json({ msg: 'Contact not found' });
         // Ensure user owns contact
-        if (contact.user.toString !== req.user.id) {
+        if (contact.user.toString() !== req.user.id) {
             return res
                 .status(401)
-                .json({ msg: 'Contact creation not authorized' });
+                .json({ msg: 'Contact update not authorized' });
         }
         // Update conatact
         contact = await Contact.findByIdAndUpdate(
@@ -97,10 +97,10 @@ router.delete('/:id', authMiddleware, async (req, res) => {
         let contact = await Contact.findById(req.params.id);
         if (!contact) return res.status(404).json({ msg: 'Contact not found' });
         // Ensure user owns contact
-        if (contact.user.toString !== req.user.id) {
+        if (contact.user.toString() !== req.user.id) {
             return res
                 .status(401)
-                .json({ msg: 'Contact creation not authorized' });
+                .json({ msg: 'Contact deletion not authorized' });
         }
         await Contact.findByIdAndRemove(req.params.id);
         res.status(200).json({ msg: 'Contact removed' });

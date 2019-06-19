@@ -1,4 +1,6 @@
 const express = require('express');
+require('dotenv').config();
+const path = require('path');
 const connect = require('./config/db');
 
 const app = express();
@@ -12,6 +14,14 @@ app.use(express.json({ extended: false }));
 app.use('/api/users', require('./routes/users'));
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/contacts', require('./routes/contacts'));
+
+if (process.env.NODE_ENV === 'production') {
+    // Set static folder in /client/build
+    app.use(express.static('client/build'));
+    app.get('*', (req, res) => {
+        res.sendFile(path.resolve(__dirname, 'client', 'build', index.html));
+    });
+}
 
 app.get('/', (req, res, next) => {
     res.json({ hey: 'Welcome to ContactKeeper API' });
