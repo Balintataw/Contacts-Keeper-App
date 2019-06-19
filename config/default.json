@@ -1,4 +1,0 @@
-{
-    "mongoURI": "mongodb+srv://contacts-koshka:ipvmZbwSYgGknbm4@contacts-cluster0-a20lr.mongodb.net/test?retryWrites=true&w=majority",
-    "jwt-secret": "7c8c3e10-4fb0-4fbf-95f6-3ec96ff8ac72"
-}
